@@ -15,7 +15,9 @@ func AdminHandler(w http.ResponseWriter, r *http.Request) {
 	// 获取cookie
 	cookie, err := r.Cookie("admin_name")
 	if err != nil || cookie.Value == ""{
+		logger.Info("AdminHandler, no cookie, will Redirect to login.")
 		http.Redirect(w, r, "/login/index", http.StatusFound)
+		return
 	}
 
 	pathInfo := strings.Trim(r.URL.Path, "/")
@@ -90,6 +92,7 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path == "/" {
 		http.Redirect(w, r, "/login/index", http.StatusFound)
+		return
 	}
 
 	t, err := template.ParseFiles("template/html/404.html")

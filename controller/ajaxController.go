@@ -7,6 +7,7 @@ import (
     "encoding/json"
 	"jQuery-AJAX-web/logger"
 	"fmt"
+	"time"
 )
 
 const (
@@ -68,7 +69,10 @@ func (this *ajaxController)LoginAction(w http.ResponseWriter, r *http.Request) {
     }
     
     // 存入cookie,使用cookie存储
-    cookie := http.Cookie{Name: "admin_name", Value: rows[0].Str(res.Map("admin_name")), Path: "/"}
+    cookie := http.Cookie{Name: "admin_name",
+    						Value: rows[0].Str(res.Map("admin_name")),
+							Expires:time.Now().Add(time.Minute),
+    						Path: "/"}
     http.SetCookie(w, &cookie)
     
     OutputJson(w, 1, "操作成功", nil)
